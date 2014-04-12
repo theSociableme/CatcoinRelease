@@ -1064,10 +1064,14 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 50 * COIN;
+    int64 nSubsidy;
 
-    // Subsidy is cut in half every 210000 blocks, which will occur approximately every 4 years
-    nSubsidy >>= (nHeight / 210000);
+    if (nHeight < 100000){
+        nSubsidy = 10 * COIN;
+    }
+    else {
+        nSubsidy = 0;
+    }
 
     return nSubsidy + nFees;
 }
@@ -2911,6 +2915,7 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
+        //const char* pszTimestamp = "Session 0 - Lessons from gravity - Minnebar 2014";
         const char* pszTimestamp = "NY Times - December 23, 2013 - For Today's Babes, Toyland Is Digital";
         CTransaction txNew;
         txNew.vin.resize(1);
